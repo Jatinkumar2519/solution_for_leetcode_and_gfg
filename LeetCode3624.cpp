@@ -3,6 +3,7 @@ using namespace std;
 class Solution {
 public:
     using ll = long long;
+    // segment tree 
     struct SegmentTree{
         vector<vector<ll>> tree;
         SegmentTree(int n,vector<ll> arr){
