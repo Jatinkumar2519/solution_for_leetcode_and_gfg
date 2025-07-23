@@ -1,1 +1,1 @@
-# Leetcode-3624
+# Leetcode Solution
