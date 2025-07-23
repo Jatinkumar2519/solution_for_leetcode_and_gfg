@@ -1,0 +1,61 @@
+class Solution {
+public:
+    int maximumGain(string str, int x, int y) {
+        int sum = 0;
+        if(x > y){
+            stack<char> s;
+            string newstr = "";
+            for(char& ch : str){
+                if(!s.empty() && s.top() == 'a' && ch == 'b'){
+                    sum += x;
+                    newstr.pop_back();
+                    s.pop();
+                }
+                else{
+                    s.push(ch);
+                    newstr.push_back(ch);
+                }
+            }
+            while(!s.empty()){
+                s.pop();
+            }
+            for(char& ch : newstr){
+                if(!s.empty() && s.top() == 'b' && ch == 'a'){
+                    sum += y;
+                    s.pop();
+                }
+                else{
+                    s.push(ch);
+                }
+            }
+        }
+        else{
+            stack<char> s;
+            string newstr = "";
+            for(char& ch : str){
+                if(!s.empty() && s.top() == 'b' && ch == 'a'){
+                    sum += y;
+                    newstr.pop_back();
+                    s.pop();
+                }
+                else{
+                    s.push(ch);
+                    newstr.push_back(ch);
+                }
+            }
+            while(!s.empty()){
+                s.pop();
+            }
+            for(char& ch : newstr){
+                if(!s.empty() && s.top() == 'a' && ch == 'b'){
+                    sum += x;
+                    s.pop();
+                }
+                else{
+                    s.push(ch);
+                }
+            }
+        }
+        return sum;
+    }
+};
