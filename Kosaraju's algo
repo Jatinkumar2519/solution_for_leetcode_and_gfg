@@ -1,0 +1,46 @@
+//Position this line where user code will be pasted.
+class Solution {
+  public:
+    stack<int> s;
+    void dfs(vector<vector<int>>& grid,int node,vector<bool>& visit){
+        visit[node] = true;
+        for(int nn : grid[node]){
+            if(visit[nn]) continue;
+            dfs(grid,nn,visit);
+        }
+        s.push(node);
+    }
+    void solve(vector<vector<int>>& grid,int node,vector<bool>& visit){
+        visit[node] = true;
+        for(int nn : grid[node]){
+            if(visit[nn]) continue;
+            solve(grid,nn,visit);
+        }
+    }
+    int kosaraju(vector<vector<int>> &adj) {
+        // code here
+        int n = adj.size();
+        vector<vector<int>> trans(n);
+        for(int i = 0;i < n;i++){
+            for(int& nn : adj[i]){
+                trans[nn].push_back(i);
+            }
+        }
+        vector<bool> visit(n,false);
+        for(int i = 0;i < n;i++){
+            if(!visit[i]){
+                dfs(adj,i,visit);
+            }
+        }
+        int count = 0;
+        fill(visit.begin(),visit.end(),false);
+        while(!s.empty()){
+            int node = s.top();s.pop();
+            if(!visit[node]){
+                count++;
+                solve(trans,node,visit);
+            }
+        }
+        return count;
+    }
+};
