@@ -1,0 +1,32 @@
+class Solution {
+public:
+    bool check(vector<int>& arr,int k,int num){
+        int count = 1;
+        int prev = arr[0];
+        for(int i = 1;i < arr.size();i++){
+            if(arr[i] - prev >= num){
+                prev = arr[i];
+                count++;
+                if(count == k) return true;
+            }
+        }
+        return false;
+    }
+    int maxDistance(vector<int>& position, int m) {
+        sort(position.begin(),position.end());
+        int left = 1;
+        int right = position.back() - position[0];
+        int maxv = 1;
+        while(left <= right){
+            int mid = (left + right) >> 1;
+            if(check(position,m,mid)){
+                maxv = mid;
+                left = mid + 1;
+            }
+            else{
+                right = mid - 1;
+            }
+        }
+        return maxv;
+    }
+};
