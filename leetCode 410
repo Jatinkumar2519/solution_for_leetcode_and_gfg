@@ -1,0 +1,31 @@
+class Solution {
+public:
+    bool check(vector<int>& arr,int k,int num){
+        int sum = 0,count = 1;
+        for(int i = 0;i < arr.size();i++){
+            if(sum + arr[i] > num){
+                sum = 0;
+                count ++;
+                if(count > k) return false;
+            }
+            sum += arr[i];
+        }
+        return true;
+    }
+    int splitArray(vector<int>& nums, int k) {
+        int left = *max_element(nums.begin(),nums.end());
+        int right = accumulate(nums.begin(),nums.end(),0);
+        int res;
+        while(left <= right){
+            int mid = (left + right) >> 1;
+            if(check(nums,k,mid)){
+                res = mid;
+                right = mid - 1;
+            }
+            else{
+                left = mid + 1;
+            }
+        }
+        return res;
+    }
+};
