@@ -1,0 +1,43 @@
+#include <bits/stdc++.h> 
+vector<vector<int>> spiralMatrix(int n, int m, int x, int y)
+{
+	// Write your Code here.
+	int r = 1,d = 1,l = 2,u = 2;
+	int temp;
+	vector<vector<int>> res;
+	while(res.size() < n*m){
+		temp = y + r;
+		while(y < temp){
+			if(x >= 0 && y >= 0 && x < n && y < m){
+				res.push_back({x,y});
+			}
+			y++;
+		}
+		r = l + 1;
+		temp = x + d;
+		while(x < temp){
+			if(x >= 0 && y >= 0 && x < n && y < m){
+				res.push_back({x,y});
+			}
+			x++;
+		}
+		d = u + 1;
+		temp = y - l;
+		while(y > temp){
+			if(x >= 0 && y >= 0 && x < n && y < m){
+				res.push_back({x,y});
+			}
+			y--;
+		}
+		l = r + 1;
+		temp = x - u;
+		while(x > temp){
+			if(x >= 0 && y >= 0 && x < n && y < m){
+				res.push_back({x,y});
+			}
+			x--;
+		}
+		u = d + 1;
+	}
+	return res;
+}
