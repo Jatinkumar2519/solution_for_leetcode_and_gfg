@@ -12,7 +12,7 @@ public:
                 int len = 0;
                 int target = num;
                 while(set.find(target) != set.end()){
-                    set.erase(set.find(target));
+                    set.erase(target);
                     len++;target++;
                 }
                 maxlen = max(maxlen,len);
