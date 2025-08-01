@@ -1,26 +1,25 @@
+// # define int long long
 class Solution {
 public:
-    vector<vector<int>> generate(int numRows) {
-        vector<vector<int>> res;
-        if(numRows == 1){
-            return {{1}};
-        }
-        if(numRows == 2){
-            return {{1},{1,1}};
-        }
-        res.push_back({1});
-        res.push_back({1,1});
-        vector<int> arr = {{1,1}};
-        for(int i = 2 ; i < numRows;i++){
-            vector<int> list;
-            list.push_back(1);
-            for(int j = 0; j < arr.size() - 1;j++){
-                list.push_back(arr[j] + arr[j + 1]);
+    vector<vector<int>> generate(int n) {
+        vector<vector<int>> dp(n + 1,vector<int>(n + 1,0));
+        dp[1][1] = 1;
+        for(int i = 1;i <= n;i++){
+            for(int j = 1;j <= n - i + 1;j++){
+                if(i == j && i == 1) continue;
+                dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
             }
-            list.push_back(1);
-            arr = list;
-            res.push_back(list);
         }
-        return res;
+        vector<vector<int>> result;
+        for(int row = 1;row <= n;row++){
+            vector<int> arr;
+            int i = row;
+            int j = 1;
+            while(i >= 1 && j <= n){
+                arr.push_back(dp[i--][j++]);
+            }
+            result.push_back(arr);
+        }
+        return result;
     }
 };
