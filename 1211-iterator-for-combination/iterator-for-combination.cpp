@@ -9,15 +9,14 @@ public:
             }
             return;
         }
-        solve(s,curr,i + 1,mask,k);
         if((mask & (1 << i)) == 0){
             solve(s,curr + s[i],i + 1,mask | (1 << i),k);
         }
+        solve(s,curr,i + 1,mask,k);
     }
     CombinationIterator(string characters, int combinationLength) {
         i = 0;
         solve(characters,"",0,0,combinationLength);
-        sort(comb.begin(),comb.end());
     }
     
     string next() {
