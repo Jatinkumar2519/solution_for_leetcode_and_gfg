@@ -1,7 +1,7 @@
 class Solution {
 public:
     double soupServings(int n) {
-        if(n >= 5000) return 1.0;
+        if(n >= 4800) return 1.0;
         unordered_map<int,unordered_map<int,double>> dp;
         vector<pair<int, int>> serves{{100, 0}, {75, 25}, {50, 50}, {25, 75}};
         function<double(int,int)> solve = [&](int a,int b) -> double{
