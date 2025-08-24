@@ -1,0 +1,70 @@
+#include <bits/stdc++.h> 
+/*
+ struct Query{
+
+	int type;	// Type of query
+	int l, r;	// Range for query of type-1
+	int idx;	// Index to change for query of type-2
+
+};
+*/
+struct SegTree{
+	vector<pair<int,int>> tree;
+	SegTree(int n,string num){
+		tree.resize(4 * n);
+		buildTree(num,0,0,n - 1);
+	}
+	void buildTree(string& num,int node,int l,int r){
+		if(l == r){
+			tree[node] = {(num[l] == '1'),1};
+			return;
+		}
+		int mid = (l + r) >> 1;
+		int left = (node << 1) + 1;
+		int right = (node << 1) + 2;
+		buildTree(num,left,l,mid);
+		buildTree(num,right,mid + 1,r);
+		tree[node].first = (tree[left].first * ((tree[right].second % 2 == 0) ? 1 : 2) % 3 + tree[right].first) % 3;
+		tree[node].second = tree[left].second + tree[right].second;
+	}
+	void update(int node,int indx,int l,int r){
+		if(indx < l || r < indx) return;
+		if(l == r){
+			tree[node].first = 1 - tree[node].first;
+			return;
+		}
+		int mid = (l + r) >> 1;
+		int left = (node << 1) + 1;
+		int right = (node << 1) + 2;
+		if(indx <= mid){
+			update(left,indx,l,mid);
+		}
+		else{
+			update(right,indx,mid + 1,r);
+		}
+		tree[node].first = (tree[left].first * ((tree[right].second % 2 == 0) ? 1 : 2) % 3 + tree[right].first) % 3;
+		tree[node].second = tree[left].second + tree[right].second;
+	}
+	pair<int,int> query(int node,int ql,int qr,int l,int r){
+		if(r < ql || qr < l) return {0,0};
+		if(ql <= l && r <= qr) return tree[node];
+		int mid = (l + r) >> 1;
+		auto left = query((node << 1) + 1,ql,qr,l,mid);
+		auto right = query((node << 1) + 2,ql,qr,mid + 1,r);
+		return {(left.first * ((right.second % 2 == 0) ? 1 : 2) % 3 + right.first) % 3,left.second + right.second};
+	}
+};
+vector<int> binaryFlip(int n, string &s, int q, vector<Query> &queries) {
+	// Write your code here
+	SegTree st(n,s);
+	vector<int> result;
+	for(auto query : queries){
+		if(query.type == 1){
+			result.push_back(st.query(0,query.l,query.r,0,n - 1).first);
+		}
+		else if(query.type == 2){
+			st.update(0,query.idx,0,n - 1);
+		}
+	}
+	return result;
+}
