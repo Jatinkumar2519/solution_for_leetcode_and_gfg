@@ -25,10 +25,10 @@ public:
             graph[u].push_back(v);
         }
 
-        map<int, int> dp;
+        int dp[33000];
         function<int(int)> solve = [&](int mask) -> int {
-            if (__builtin_popcount(mask) == n) return 0; // all courses done
-            if (dp.find(mask) != dp.end()) return dp[mask];
+            if (__builtin_popcount(mask) == n) return 0;
+            if (dp[mask] != -1) return dp[mask];
 
             vector<int> available;
             for (int i = 1; i <= n; i++) {
@@ -55,9 +55,8 @@ public:
                 }
 
                 int ans = solve(newMask);
-                if (ans != INT_MAX) res = min(res, 1 + ans);
 
-                // backtrack
+                if (ans != INT_MAX) res = min(res, 1 + ans);
                 for (int node : group) {
                     for (int nn : graph[node]) degree[nn]++;
                 }
@@ -65,7 +64,7 @@ public:
 
             return dp[mask] = res;
         };
-
+        memset(dp,-1,sizeof(dp));
         return solve(0);
     }
 };
