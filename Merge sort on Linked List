@@ -1,0 +1,69 @@
+/*
+class Node {
+public:
+    int data;
+    Node* next;
+
+    Node(int x){
+        data = x;
+        next = NULL;
+    }
+};
+*/
+class Solution {
+  public:
+    Node* mergeSort(Node* head) {
+        // code here
+        function<pair<Node*,Node*>(Node*,Node*)> getMid = [&](Node* left,Node* right) -> pair<Node*,Node*> {
+            Node* slow = left;
+            Node* fast = left;
+            Node* prev = nullptr;
+            while(fast != right && right->next != fast){
+                prev = slow;
+                slow = slow->next;
+                fast = fast->next->next;
+            }
+            return {prev,slow};
+        };
+        function<void(Node*,Node*,Node*)> merge = [&](Node* left,Node* mid,Node*right) -> void{
+            Node* ptr = left;
+            Node* ptr1 = left;
+            Node* ptr2 = mid->next;
+            vector<int> arr;
+            while(ptr1 != mid->next && ptr2 != right->next){
+                if(ptr1->data < ptr2->data){
+                    arr.push_back(ptr1->data);
+                    ptr1 = ptr1->next;
+                }
+                else{
+                    arr.push_back(ptr2->data);
+                    ptr2 = ptr2->next;
+                }
+            }
+            while(ptr1 != mid->next){
+                arr.push_back(ptr1->data);
+                ptr1 = ptr1->next;
+            }
+            while(ptr2 != right->next){
+                arr.push_back(ptr2->data);
+                ptr2 = ptr2->next;
+            }
+            for(int i = 0;i < arr.size();i++){
+                ptr->data = arr[i];
+                ptr = ptr->next;
+            }
+        };
+        function<void(Node*,Node*)> solve = [&](Node* left,Node* right) -> void {
+            if(!left || !right || left == right || right->next == left) return;
+            pair<Node*,Node*> mid = getMid(left,right);
+            solve(left,mid.first);
+            solve(mid.second,right);
+            merge(left,mid.first,right);
+        };
+        Node* left = head;
+        Node* right = head;
+        while(right->next) right = right->next;
+        solve(left,right);
+        return head;
+    }
+};
