@@ -2,26 +2,20 @@ class Solution {
 public:
     int minCost(string colors, vector<int>& neededTime) {
         int sum = 0;
-        priority_queue<int> pq;
+        int maxv = 0;
         char prev = colors[0];
-        pq.push(neededTime[0]);
-        for(int i = 1;i < colors.length();i++){
+        for(int i = 0;i < colors.length();i++){
+            sum += neededTime[i];
             if(prev == colors[i]){
-                pq.push(neededTime[i]);
+                maxv = max(maxv,neededTime[i]);
             }
             else{
-                pq.pop();
-                while(!pq.empty()){
-                    sum += pq.top();pq.pop();
-                }
+                sum -= maxv;
                 prev = colors[i];
-                pq.push(neededTime[i]);
+                maxv = neededTime[i];
             }
         }
-        pq.pop();
-        while(!pq.empty()){
-            sum += pq.top();pq.pop();
-        }
+        sum -= maxv;
         return sum;
     }
 };
