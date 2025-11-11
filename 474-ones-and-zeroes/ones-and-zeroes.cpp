@@ -10,11 +10,11 @@ public:
                 zero += (ch == '0') ? 1 : 0;
             }
             arr.push_back({zero,one});
-            // cout<< zero <<" "<< one <<endl;
         }
+
         int sum_0 = 0;
         int sum_1 = 0;
-        int dp[101][101][601];
+        static int dp[101][101][601];
         memset(dp,-1,sizeof(dp));
         function<int(int)> solve = [&](int curr)->int{
             if(curr == len) return 0;
