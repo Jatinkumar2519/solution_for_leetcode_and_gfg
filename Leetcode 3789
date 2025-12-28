@@ -1,0 +1,18 @@
+class Solution {
+public:
+    long long minimumCost(int cost1, int cost2, int costBoth, int need1, int need2) {
+        using ll = long long;
+        ll res = 0;
+        ll common = min(need1,need2);
+
+        res = common * 1ll * min(cost1 + cost2,costBoth);
+
+        need1 -= common;
+        need2 -= common;
+
+        res +=1ll * need1 * min(cost1,costBoth);
+        res +=1ll * need2 * min(cost2,costBoth);
+        
+        return res;
+    }
+};
