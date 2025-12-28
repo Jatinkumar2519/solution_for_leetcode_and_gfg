@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int minAllOneMultiple(int k) {
+        unordered_set<int> visit;
+        int len = 1;
+        int num = 1 % k;
+        while(true){
+            if(num == 0) return len;
+            if(visit.find(num) != visit.end()){
+                return -1;
+            }
+            visit.insert(num);
+            num = (num * 10 + 1) % k;
+            len++;
+        }
+        return -1;
+    }
+};
