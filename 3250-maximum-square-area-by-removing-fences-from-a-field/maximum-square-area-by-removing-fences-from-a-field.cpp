@@ -9,10 +9,6 @@ public:
         if(hFences.back() != m) hFences.push_back(m);
         if(vFences.back() != n) vFences.push_back(n);
 
-        for(auto& num : hFences) cout<< num << ' ';
-        cout<< endl;
-        for(auto& num : vFences) cout<< num << ' ';
-
         unordered_map<int,int> diffs;
         for(int i = 0;i < hFences.size();i++){
             for(int j = i + 1;j < hFences.size();j++){
