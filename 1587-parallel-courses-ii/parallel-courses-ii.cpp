@@ -1,70 +1,65 @@
 class Solution {
 public:
-    void selectK(vector<int>& arr, int k, vector<vector<int>>& res) {
-        int n = arr.size();
-        for (int mask = 0; mask < (1 << n); mask++) {
-            if (__builtin_popcount(mask) == k) {
-                vector<int> curr;
-                for (int j = 0; j < n; j++) {
-                    if (mask & (1 << j)) {
-                        curr.push_back(arr[j]);
-                    }
-                }
-                res.push_back(curr);
-            }
-        }
-    }
-
-    int minNumberOfSemesters(int n, vector<vector<int>>& relations, int k) {
+    int minNumberOfSemesters(int n, vector<vector<int>>& dependencies, int k) {
         vector<int> degree(n + 1, 0);
         vector<vector<int>> graph(n + 1);
 
-        for (auto &edge : relations) {
-            int u = edge[0], v = edge[1];
+        for (auto& edge : dependencies) {
+            int u = edge[0];
+            int v = edge[1];
+
             degree[v]++;
             graph[u].push_back(v);
         }
 
-        int dp[33000];
-        function<int(int)> solve = [&](int mask) -> int {
-            if (__builtin_popcount(mask) == n) return 0;
-            if (dp[mask] != -1) return dp[mask];
+        unordered_map<int, int> dp;
 
-            vector<int> available;
-            for (int i = 1; i <= n; i++) {
-                if (degree[i] == 0 && ((mask & (1 << (i - 1))) == 0)) {
-                    available.push_back(i);
+        function<int(int, vector<int>&)> solve = [&](int mask,
+                                                     vector<int>& deg) -> int {
+            if (mask == (1 << n) - 1)
+                return 0;
+
+            if (dp.find(mask) != dp.end())
+                return dp[mask];
+
+            vector<int> canTaken;
+            for (int node = 1; node <= n; node++) {
+                if (deg[node] == 0 && (mask & (1 << (node - 1))) == 0) {
+                    canTaken.push_back(node);
                 }
             }
 
-            if (available.empty()) return INT_MAX;
-
-            vector<vector<int>> groupOfK;
-            if ((int)available.size() <= k) {
-                groupOfK.push_back(available);
+            int minv = INT_MAX;
+            if ((int)canTaken.size() <= k) {
+                int newmask = mask;
+                for (int& node : canTaken) {
+                    for (auto& nb : graph[node]) {
+                        deg[nb]--;
+                    }
+                    newmask |= (1 << (node - 1));
+                }
+                minv = min(minv, 1 + solve(newmask, deg));
             } else {
-                selectK(available, k, groupOfK);
-            }
-
-            int res = INT_MAX;
-            for (auto &group : groupOfK) {
-                int newMask = mask;
-                for (int node : group) {
-                    newMask |= (1 << (node - 1));
-                    for (int nn : graph[node]) degree[nn]--;
+                int len = canTaken.size();
+                for (int num = 1; num < (1 << len); num++) {
+                    if (__builtin_popcount(num) == k) {
+                        int newmask = mask;
+                        vector<int> newdeg = deg;
+                        for (int bit = 0; bit < len; bit++) {
+                            if (num & (1 << bit)) {
+                                int c = canTaken[bit];
+                                for (auto& nb : graph[c]) {
+                                    newdeg[nb]--;
+                                }
+                                newmask |= (1 << (c - 1));
+                            }
+                        }
+                        minv = min(minv, 1 + solve(newmask, newdeg));
+                    }
                 }
-
-                int ans = solve(newMask);
-
-                if (ans != INT_MAX) res = min(res, 1 + ans);
-                for (int node : group) {
-                    for (int nn : graph[node]) degree[nn]++;
-                }
             }
-
-            return dp[mask] = res;
+            return dp[mask] = minv;
         };
-        memset(dp,-1,sizeof(dp));
-        return solve(0);
+        return solve(0, degree);
     }
 };
