@@ -8,8 +8,7 @@ public:
         ll suf;
         ll pref;
         Node() : total(0), suf(NEG_INF), pref(NEG_INF) {}
-        Node(ll total_, ll suf_, ll pref_)
-            : total(total_), suf(suf_), pref(pref_) {}
+        Node(ll total_, ll suf_, ll pref_) : total(total_), suf(suf_), pref(pref_) {}
     };
 
     class SegmentTree {
@@ -108,16 +107,13 @@ public:
                 if (p >= 1 && q + 1 < n) {
                     int len1 = prefix[p];
                     int len2 = suffix[q];
-                    // require at least one element before p and after q for the
-                    // increasing parts
+                    
                     if (len1 >= 2 && len2 >= 2) {
-                        int L = p - len1 + 1; // allowed l in [L, p-1]
+                        int L = p - len1 + 1; 
                         int Rl = p - 1;
-                        int Rr = q + len2 - 1; // allowed r in [q+1, Rr]
+                        int Rr = q + len2 - 1; 
 
-                        // left_part = max_{s in [L..p-1]} sum(s..p-1)
                         ll left_part = seg.max_suffix(L, Rl);
-                        // right_part = max_{t in [q+1..Rr]} sum(q+1..t)
                         ll right_part = seg.max_prefix(q + 1, Rr);
 
                         if (left_part != NEG_INF && right_part != NEG_INF) {
