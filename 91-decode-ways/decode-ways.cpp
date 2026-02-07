@@ -9,18 +9,13 @@ public:
 
             if(dp[i] != -1) return dp[i];
 
-            if(s[i] == '0') return dp[i] = INT_MAX;
+            if(s[i] == '0') return 0;
 
             int count = solve(i + 1);
 
-            if(count == INT_MAX) count = 0;
 
             if(i + 2 <= n && stoi(s.substr(i,2)) <= 26){
-                int res = solve(i + 2);
-
-                if(res != INT_MAX){
-                    count += res;
-                }
+                count += solve(i + 2);
             }
 
             return dp[i] = count;
@@ -30,5 +25,12 @@ public:
         int res = solve(0);
 
         return (res != INT_MAX) ? res : 0;
+
+        // vector<int> dp(n + 1);
+        // dp[n] = 1;
+
+        // for(int i = n - 1;i >= 0;i--){
+
+        // }
     }
 };
