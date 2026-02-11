@@ -12,28 +12,33 @@
 class Solution {
 public:
     bool isCompleteTree(TreeNode* root) {
-        queue<TreeNode*> q{{root}};
-        bool flag = true;
+        queue<TreeNode*> q;
+        q.push(root);
+
+        bool flag = false;
         while(!q.empty()){
-            int len = q.size();
-            while(len--){
-                TreeNode* node = q.front();q.pop();
-                if(node->left){
-                    if(!flag) return false;
+            auto node = q.front();q.pop();
+
+            if(node->left){
+                if(flag) return false;
+                else{
                     q.push(node->left);
                 }
+            }
+            else{
+                flag = true;
+            }
+            if(node->right){
+                if(flag) return false;
                 else{
-                    flag = false;
-                }
-                if(node->right){
-                    if(!flag) return false;
                     q.push(node->right);
                 }
-                else{
-                    flag = false;
-                }
+            }
+            else{
+                flag = true;
             }
         }
+
         return true;
     }
 };
