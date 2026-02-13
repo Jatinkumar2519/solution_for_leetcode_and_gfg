@@ -10,24 +10,19 @@
 class Solution {
 public:
     TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
-        
-        function<TreeNode*(TreeNode*)> solve = [&](TreeNode* node)->TreeNode*{
-            if(!node) return nullptr;
+        if(!root) return nullptr;
 
-            if(node == p || node == q) return node;
+        if(root == p || root == q) return root;
 
-            auto left = solve(node->left);
-            auto right = solve(node->right);
+        auto left = lowestCommonAncestor(root->left,p,q);
+        auto right = lowestCommonAncestor(root->right,p,q);
 
-            if(left && right){
-                return node;
-            }
-            else if(left && !right){
-                return left;
-            }
-            return right;
-        };
-
-        return solve(root);
+        if(left && right){
+            return root;
+        }
+        else if(left && !right){
+            return left;
+        }
+        return right;
     }
 };
