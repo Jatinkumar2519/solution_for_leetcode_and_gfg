@@ -6,21 +6,15 @@ var minOperations = function(s) {
     let n = s.length
 
     let s1 = ""
+    let s2 = ""
     for(let i = 0;i < n;i++){
         if(i % 2 == 0){
             s1 += '0'
+            s2 += '1'
         }
         else{
             s1 += '1'
-        }
-    }
-    let s2 = ""
-    for(let i = 0;i < n;i++){
-        if(i % 2 != 0){
             s2 += '0'
-        }
-        else{
-            s2 += '1'
         }
     }
 
