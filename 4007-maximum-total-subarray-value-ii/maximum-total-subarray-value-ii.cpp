@@ -33,10 +33,18 @@ public:
         };
         
         ll res = 0;
+        
+        int maxv = INT_MIN;
+        int minv = INT_MAX;
+
         priority_queue<tuple<int,int,int>> pq;
 
-        for(int i = 0;i < n;i++){
-            pq.push(make_tuple(getValue(i,n - 1),i,n - 1));
+        for(int i = n - 1;i >= 0;i--){
+
+            maxv = max(maxv,nums[i]);
+            minv = min(minv,nums[i]);
+
+            pq.push(make_tuple(maxv - minv,i,n - 1));
         }
 
         while(!pq.empty() && K > 0){
