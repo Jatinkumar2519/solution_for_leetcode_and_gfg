@@ -12,7 +12,7 @@ public:
         }
 
         vector<bool> result;
-        for(auto q : queries){
+        for(auto& q : queries){
             result.push_back(ids[q[0]] == ids[q[1]]);
         }
 
