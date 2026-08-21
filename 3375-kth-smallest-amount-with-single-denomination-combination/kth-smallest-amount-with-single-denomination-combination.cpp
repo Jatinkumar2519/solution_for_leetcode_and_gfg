@@ -5,11 +5,14 @@ public:
         int n = coins.size();
         using ll = long long;
 
-        auto getLCM = [&](vector<int>& arr)->ll{
+        auto getLCM = [&](int mask)->ll{
 
             unordered_map<int,int> map;
 
-            for(int num : arr){
+            for(int i = 0;i < n;i++){
+
+                if((mask & (1 << i)) == 0) continue;
+                int num = coins[i];
 
                 for(int d = 2;d * d <= num;d++){
 
@@ -36,17 +39,9 @@ public:
             return lcm;
         };
 
-        map<vector<int>,ll> map;
+        map<int,ll> map;
         for(int mask = 1;mask < (1 << n);mask++){
-            vector<int> nums;
-
-            for(int b = 0;b < n;b++){
-                if(mask & (1 << b)){
-                    nums.push_back(coins[b]);
-                }
-            }
-
-            map[nums] = getLCM(nums);
+            map[mask] = getLCM(mask);
         }
         
         function<bool(ll)> feasible = [&](ll mid)->bool{
@@ -54,17 +49,9 @@ public:
             ll count = 0;
 
             for(int mask = 1;mask < (1 << n);mask++){
-                int len = 0;
-                vector<int> nums;
 
-                for(int b = 0;b < n;b++){
-                    if(mask & (1 << b)){
-                        nums.push_back(coins[b]);
-                        len++;
-                    }
-                }
-
-                ll lcm = map[nums];
+                int len = __builtin_popcount(mask);
+                ll lcm = map[mask];
 
                 if(len % 2){
                     count += mid / lcm;
