@@ -39,7 +39,7 @@ public:
             return lcm;
         };
 
-        map<int,ll> map;
+        unordered_map<int,ll> map;
         for(int mask = 1;mask < (1 << n);mask++){
             map[mask] = getLCM(mask);
         }
