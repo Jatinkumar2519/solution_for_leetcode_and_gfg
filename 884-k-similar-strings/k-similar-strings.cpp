@@ -17,26 +17,13 @@ public:
 
             int minv = INT_MAX;
             for (int j = idx; j < n; j++) {
-                if (s2[idx] == str[j] && s2[j] == str[idx]) {
+                if (s2[idx] == str[j]) {
 
                     swap(str[idx], str[j]);
 
                     minv = min(minv, 1 + solve(str, idx + 1));
 
                     swap(str[idx], str[j]);
-                }
-            }
-
-            if (minv == INT_MAX) {
-                for (int j = idx; j < n; j++) {
-                    if (s2[idx] == str[j]) {
-
-                        swap(str[idx], str[j]);
-
-                        minv = min(minv, 1 + solve(str, idx + 1));
-
-                        swap(str[idx], str[j]);
-                    }
                 }
             }
             return dp[key] = minv;
