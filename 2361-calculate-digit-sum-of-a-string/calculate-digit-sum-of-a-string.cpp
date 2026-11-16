@@ -1,6 +1,6 @@
 class Solution {
 public:
-    string digitSum(string s, int k) {
+    string digitSum(string& s, int k) {
         int n = s.length();
         if(n <= k) return s;
 
